@@ -1,4 +1,5 @@
 from enum import Enum
+import heapq
 
 # Enum for the type of decay
 class DecayMode(Enum):
@@ -12,15 +13,17 @@ class DecayMode(Enum):
     NEUTRON = 8 # n
     SF = 9 # sf
 
+
 # Atributes of an element Mass Number,Atomic Number,A Element,Isomer,Mass Excess,Mass Excess uncertainty,Isomer Excitation Energy,Isomer Excitation Energy uncertainty,Origin of Excitation Energy,Isom.Unc,Isom.Inv,Half-life,Half-life unit,Half-life uncertainty,Spin and Parity,Ensdf year,Year of Discovery,Decay Modes and their Intensities
 class Element:
     def __init__(self, symbol, atomic_number, atomic_weight):
-        self._symbol = symbol
+        self.symbol = symbol
         self._atomic_number = atomic_number
         self.atomic_weight = atomic_weight
         self._ensdf_year = int()
         self._year_of_discovery = int()
-        self.decay_modes_and_intensities = set()
+        #heapq of tuples (DecayMode, intensity)
+        self.decay_modes_and_intensities = [] # set of tuples (DecayMode, intensity)
 
     @property
     def symbol(self):
@@ -30,7 +33,7 @@ class Element:
     def symbol(self, value):
         if not isinstance(value, str):
             raise ValueError("Invalid symbol")
-        self.symbol = value
+        self._symbol = value
 
     @property
     def atomic_number(self):
@@ -40,84 +43,85 @@ class Element:
     def atomic_number(self, value):
         if not isinstance(value, int) or value < 0:
             raise ValueError("Invalid atomic number")
-        self.atomic_number = value
+        self._atomic_number = value
 
     @property
     def isomer(self):
-        return self.isomer
+        return self._isomer
 
     @isomer.setter
     def isomer(self, value):
         if not isinstance(value, bool):
             raise ValueError("Invalid isomer")
-        self.isomer = value
+        self._isomer = value
 
     @property
     def mass_excess(self):
-        return self.mass_excess
+        return self._mass_excess
 
     @mass_excess.setter
     def mass_excess(self, value):
         if not isinstance(value, float):
             raise ValueError("Invalid mass excess")
-        self.mass_excess = value
+        self._mass_excess = value
 
     @property
     def mass_excess_uncertainty(self):
-        return self.mass_excess_uncertainty
+        return self._mass_excess_uncertainty
 
     @mass_excess_uncertainty.setter
     def mass_excess_uncertainty(self, value):
         if not isinstance(value, float):
             raise ValueError("Invalid mass excess uncertainty")
-        self.mass_excess_uncertainty = value
+        self._mass_excess_uncertainty = value
 
     @property
     def isomer_excitation_energy(self):
-        return self.isomer_excitation_energy
+        return self._isomer_excitation_energy
 
     @isomer_excitation_energy.setter
     def isomer_excitation_energy(self, value):
         if not isinstance(value, float):
             raise ValueError("Invalid isomer excitation energy")
-        self.isomer_excitation_energy = value
+        self._isomer_excitation_energy = value
 
     @property
     def isomer_excitation_energy_uncertainty(self):
-        return self.isomer_excitation_energy_uncertainty
+        return self._isomer_excitation_energy_uncertainty
 
     @isomer_excitation_energy_uncertainty.setter
     def isomer_excitation_energy_uncertainty(self, value):
         if not isinstance(value, float):
             raise ValueError("Invalid isomer excitation energy uncertainty")
-        self.isomer_excitation_energy_uncertainty = value
+        self._isomer_excitation_energy_uncertainty = value
 
     @property
     def ensdf_year(self):
-        return self.ensdf_year
+        return self._ensdf_year
 
     @ensdf_year.setter
     def ensdf_year(self, value):
         if not value is int or value < 0:
             raise ValueError("Invalid ensdf year")
-        self.ensdf_year = value
+        self._ensdf_year = value
 
     @property
     def year_of_discovery(self):
-        return self.year_of_discovery
+        return self._year_of_discovery
 
     @year_of_discovery.setter
     def year_of_discovery(self, value):
         if not value is int or value < 0:
             raise ValueError("Invalid year of discovery")
-        self.year_of_discovery = value
+        self._year_of_discovery = value
+
 
     def add_decay_mode_and_intensity(self, decay_mode, intensity):
         if not isinstance(decay_mode, DecayMode):
             raise ValueError("Invalid decay mode")
         if decay_mode in self.decay_modes_and_intensities:
             raise ValueError("Decay mode already added")
-        self.decay_modes_and_intensities.add({decay_mode, intensity})
+        heapq.heappush(self.decay_modes_and_intensities, (intensity, decay_mode))
 
 
 
