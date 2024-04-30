@@ -26,4 +26,4 @@ class TestElementBox(unittest.TestCase):
         dwg.save()
 
         self.assertTrue(os.path.exists('test_boxes.svg'))
-        os.execvp('feh', ['feh', 'test_boxes.svg'])
+        os.execvp('inkscape', ['inkscape', 'test_boxes.svg'])

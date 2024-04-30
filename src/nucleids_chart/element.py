@@ -3,15 +3,15 @@ import heapq
 
 # Enum for the type of decay
 class DecayMode(Enum):
-    ALPHA = 1 # a
-    BETA_PLUS = 2 # b+
-    BETA_MINUS = 3 # b-
-    ELECTRON_CAPTURE = 4 # ec
-    GAMMA = 5 # g
-    ISOMER = 6 # i
-    PROTON = 7 # p
-    NEUTRON = 8 # n
-    SF = 9 # sf
+    ALPHA = "Alpha" # a
+    BETA_PLUS = "Beta+" # b+
+    BETA_MINUS = "Beta-" # b-
+    ELECTRON_CAPTURE = "EC" # ec
+    GAMMA = "Gamma" # g
+    ISOMER = "Isomer" # i
+    PROTON = "Proton" # p
+    NEUTRON = "Neutron" # n
+    SF = "SF" # sf
 
 
 # Atributes of an element Mass Number,Atomic Number,A Element,Isomer,Mass Excess,Mass Excess uncertainty,Isomer Excitation Energy,Isomer Excitation Energy uncertainty,Origin of Excitation Energy,Isom.Unc,Isom.Inv,Half-life,Half-life unit,Half-life uncertainty,Spin and Parity,Ensdf year,Year of Discovery,Decay Modes and their Intensities
@@ -22,8 +22,7 @@ class Element:
         self.atomic_weight = atomic_weight
         self._ensdf_year = int()
         self._year_of_discovery = int()
-        #heapq of tuples (DecayMode, intensity)
-        self.decay_modes_and_intensities = [] # set of tuples (DecayMode, intensity)
+        self.decay_modes_and_intensities = []
 
     @property
     def symbol(self):

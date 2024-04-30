@@ -22,5 +22,5 @@ class ElementTable:
 
 
     def add_element(self, element):
-        box = ElementBox(element, 10, 10, 'beige', 1)
+        box = ElementBox(element, 10, 10, 'beige', 1, self.size[0], self.size[1])
         self.table.add(box)
