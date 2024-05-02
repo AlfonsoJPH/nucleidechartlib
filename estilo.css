@@ -1,0 +1,77 @@
+* {
+  rect{
+  fill: beige;
+  stroke: black;
+  stroke-width: 0.1;
+  }
+  .Symbol{
+    text-anchor: middle;
+    transform: translateX(0.55px) translateY(0.65px);
+    font-size: 0.5px;
+  }
+  .Z{
+    text-anchor: start;
+    transform: translateX(0.1px) translateY(0.3px);
+    font-size: 0.2px;
+  }
+  .N{
+    text-anchor: start;
+    transform: translateX(0.1px) translateY(0.8px);
+    font-size: 0.2px;
+  }
+}
+.Alpha {
+  rect {
+  fill: #DCDC01;
+  }
+}
+
+.Beta+ {
+  rect{
+
+  fill: #76C848;
+  }
+}
+
+.Beta- {
+  rect{
+    fill: #32D0C8;
+  }
+}
+
+
+.EC {
+  rect {
+  fill: #76C848;
+  }
+}
+
+.Isomer {
+  rect {
+  fill: purple;
+  }
+}
+
+.Proton {
+  rect {
+  fill: #DCB22B;
+  }
+}
+
+.Neutron {
+  rect {
+  fill: #DC5FCD;
+  }
+}
+
+.SF {
+  rect {
+  fill: #DC8AA2;
+  }
+}
+
+.Gamma {
+  rect {
+  fill: brown;
+  }
+}

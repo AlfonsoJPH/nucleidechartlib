@@ -7,11 +7,11 @@ class TestElementTable(unittest.TestCase):
     def test_table(self):
         elements = csv_driver.read_elements('datos.csv')
         self.assertTrue(len(elements) > 0)
-        table = ElementTable(elements)
+        table = ElementTable(elements, "A4")
 
 
 
         table.draw('test_table.svg')
 
         self.assertTrue(os.path.exists('test_table.svg'))
-        os.execvp('inkscape', ['inkscape', 'test_table.svg'])
+        os.execvp('firefox', ['firefox', 'test_table.svg'])
