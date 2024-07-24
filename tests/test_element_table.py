@@ -15,3 +15,15 @@ class TestElementTable(unittest.TestCase):
 
         self.assertTrue(os.path.exists('test_table.svg'))
         os.execvp('firefox', ['firefox', 'test_table.svg'])
+
+    def test_table_divided(self):
+        elements = csv_driver.read_elements('datos.csv')
+        self.assertTrue(len(elements) > 0)
+        table = ElementTable(elements, "A4", 2)
+
+
+
+        table.draw('test_table_divided.svg')
+
+        self.assertTrue(os.path.exists('test_table_divided.svg'))
+        os.execvp('firefox', ['firefox', 'test_table_divided.svg'])

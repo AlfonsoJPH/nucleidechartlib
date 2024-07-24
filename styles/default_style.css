@@ -1,0 +1,37 @@
+ /* The animation code */
+@keyframes example {
+  0%   {background-color: red;}
+  25%  {background-color: yellow;}
+  50%  {background-color: blue;}
+  100% {background-color: green;}
+}
+.element_box {
+  position: relative;
+  .Z{
+    dominant-baseline: ;
+    text-anchor: start;
+  }
+}
+.element_box:hover{
+  rect{
+    width: 100px;
+    height: 100px;
+    z-index: 100;
+    transform: translateZ(50px) translateX(-50px) translateY(-50px);
+
+  }
+  .Symbol{
+
+    font-size: 5px;
+    transform: translateY(5px);
+
+  }
+  .Z{
+  display:  block;
+  transform: translateX(-4.7px) translateY(35px);
+  font-size: 20px;
+  padding: 20px;
+
+  }
+
+}
