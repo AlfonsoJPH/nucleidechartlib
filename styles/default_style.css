@@ -1,37 +1,87 @@
- /* The animation code */
-@keyframes example {
-  0%   {background-color: red;}
-  25%  {background-color: yellow;}
-  50%  {background-color: blue;}
-  100% {background-color: green;}
+
+.nucleide text{
+  font-size: 4px;
+
 }
-.element_box {
-  position: relative;
-  .Z{
-    dominant-baseline: ;
-    text-anchor: start;
+.ALPHA {
+  rect:not(.border) {
+    fill: #B3A60A;
+  }
+  fill: #B3A60A;
+}
+
+
+.BETA_MINUS {
+    rect:not(.border) {
+      fill: #548088;
+  }
+  fill: #548088;
+}
+
+
+.ELECTRON_CAPTURE {
+  rect:not(.border) {
+    fill: #76C848;
+  }
+  fill: #76C848;
+}
+
+.STABLE {
+  rect:not(.border) {
+    fill: black;
+  }
+  fill: black;
+
+  text{
+    fill:white;
   }
 }
-.element_box:hover{
-  rect{
-    width: 100px;
-    height: 100px;
-    z-index: 100;
-    transform: translateZ(50px) translateX(-50px) translateY(-50px);
 
+.PROTON {
+  rect:not(.border) {
+    fill: #AD8516;
   }
-  .Symbol{
+  fill: #AD8516;
+}
 
-    font-size: 5px;
-    transform: translateY(5px);
-
+.NEUTRON {
+  rect:not(.border) {
+    fill: #DC5FCD;
   }
-  .Z{
-  display:  block;
-  transform: translateX(-4.7px) translateY(35px);
-  font-size: 20px;
-  padding: 20px;
+  fill: #DC5FCD;
+}
 
+.SF {
+  rect:not(.border){
+    fill: #295F2D;
   }
+  fill: #295F2D;
+}
 
+.BETA_PLUS {
+  rect:not(.border) {
+    fill: #AF5E5B;
+  }
+  fill: #AF5E5B;
+}
+
+.IT {
+  rect:not(.border) {
+    fill: #C1BAB4;
+  }
+  fill: #C1BAB4;
+}
+
+.ELECTRON_CAPTURE {
+  rect:not(.border) {
+    fill: #646293;
+  }
+  fill: #646293;
+}
+
+.NEUTRON {
+  rect:not(.border) {
+    fill: #869898;
+  }
+  fill: #869898;
 }
