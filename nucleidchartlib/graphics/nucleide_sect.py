@@ -10,7 +10,7 @@ class Nucleide_Sect:
     name: str
     half_life: str
     decay_modes_intensities: Dict[DecayMode, float]
-    extra: Optional[Dict[str, str]] = None
+    extra: Dict[str, str]
 
     def get_max_decay_mode(self):
         maximum = DecayMode.STABLE
@@ -23,24 +23,6 @@ class Nucleide_Sect:
         return maximum
 
 
-# Config example
-# {
-#     "colors": {
-#         "DecayModes": {
-#             "Alpha": "#FF0000",
-#             "Beta+": "#0000FF",
-#             "Beta-": "#00FF00",
-#             "Gamma": "#FFFF00"
-#         },
-#     },
-#     "cell_sizes": {
-#         "default": {"width": 10, "height": 10}
-#     },
-#     "information": {
-#         "show_decay_time": true
-#         "show_decay_divided": diagonal
-#     }
-# }
     def draw(self, dwg, config={}, total=1):
         if not self.decay_modes_intensities:
             raise ValueError("self.decay_modes_intensities should contain at least one item, element:" + self.name)
@@ -55,7 +37,8 @@ class Nucleide_Sect:
         stroke_color = default_config.get("colors").get("Stroke")
         stroke_width = default_config.get("Nucleide_Sect").get("stroke_width")
         border_width = default_config.get("Nucleide_Sect").get("border_width")
-        font_size = default_config.get("Nucleide_Sect").get("font1")
+        show_half_life = default_config.get("Nucleide_Sect").get("show_half_life")
+        show_energy = default_config.get("Nucleide_Sect").get("show_energy")
         size = default_config.get("Nucleide_Sect").get("sizes")
         element_box_size = default_config.get("Element_Box").get("sizes")
         if config != {}:
@@ -63,7 +46,8 @@ class Nucleide_Sect:
             stroke_color = config.get("colors", {}).get("Stroke", stroke_color)
             stroke_width = config.get("Nucleide_Sect", {}).get("sizes", {}).get("stroke_width", stroke_width)
             border_width = config.get("Nucleide_Sect", {}).get("sizes", {}).get("border_width", border_width)
-            font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("font1", font_size)
+            half_life_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_font", font_size)
+            energy_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_font", font_size)
             size = config.get("Nucleide_Sect", {}).get("sizes", size)
             element_box_size = config.get("Element_Box", {}).get("sizes", element_box_size)
 
@@ -110,18 +94,19 @@ class Nucleide_Sect:
                 points = []
                 class_ = ''
                 if value > 0.05:
-                    points = [(0,0), (0, y_size), (x_size, 0)]
+                    points = [(x_size,y_size), (0, y_size), (x_size, 0)]
                     class_ = 'other_decay_mode 50%'
+                    i += 1
                 else:
                     size = max( x_size, y_size)*0.2
                     if size > min(x_size, y_size):
                         size = min(x_size, y_size)
 
                     if i % 4 == 0:
-                        points=[(0, 0), (size, 0), (0, size)]
+                        points=[(x_size, y_size), (x_size - size, y_size), (x_size, y_size - size)]
 
                     elif i % 4 == 1:
-                        points=[(x_size, y_size), (x_size - size, y_size), (x_size, y_size - size)]
+                        points=[(0, 0), (size, 0), (0, size)]
                     elif i % 4 == 2:
                         points=[(x_size, 0), (x_size - size, 0), (x_size, size)]
                     else:
@@ -135,16 +120,33 @@ class Nucleide_Sect:
 
                 nucleide_group.add(triangle)
 
-        half_life_text = dwg.text(self.half_life, class_="half_life", insert=(x_size/2,  font_size), font_size=font_size, fill=text_color, text_anchor="middle")
+        if show_half_life:
+            half_life_font_size = default_config.get("Nucleide_Sect").get("half_life_font")
+            half_life_offset = default_config.get("Nucleide_Sect").get("half_life_offset")
+            half_life_offset = (x_size*half_life_offset[0], half_life_offset[1])
+            if config != {}:
+                half_life_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_font", half_life_font_size)
+                half_life_offset = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_offset", half_life_offset)
 
-        nucleide_group.add(half_life_text)
+            half_life_text = dwg.text(self.half_life, class_="half_life", insert=half_life_offset, font_size=half_life_font_size, fill=text_color, text_anchor="middle")
+            nucleide_group.add(half_life_text)
 
+        if show_energy:
+            energy_offset = default_config.get("Nucleide_Sect").get("energy_offset")
+            energy_font_size = default_config.get("Nucleide_Sect").get("energy_font")
+            if config != {}:
+                energy_offset = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_offset", energy_offset)
+                energy_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_font", energy_font_size)
 
-
-        if self.extra is not None:
-            i = 0
+            e = 0
             for key, value in self.extra.items():
-                key_text = dwg.text((key + " " + value), id=key, insert=(1, y_size - i * font_size), font_size=font_size, fill=text_color)
-                nucleide_group.add(key_text)
+                energy_text = dwg.text(key + " " + value, class_="energy", insert=(energy_offset[0],energy_offset[1]-e*energy_font_size), font_size=energy_font_size, fill=text_color, text_anchor="middle")
+                e += 1
+                nucleide_group.add(energy_text)
+
+
+
+        border = dwg.rect(size=(x_size, y_size), fill="none", stroke=stroke_color, stroke_width=border_width)
+        nucleide_group.add(border)
 
         return nucleide_group

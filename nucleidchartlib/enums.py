@@ -6,8 +6,8 @@ class DecayMode(Enum):
     BETA_PLUS = "Beta+" # b+ Positron emission
     BETA_MINUS = "Beta-" # b- Negatron emission
     ELECTRON_CAPTURE = "EC" # ec Electron capture
-    GAMMA = "Gamma" # g Gamma emission
-    ISOMER = "Isomer" # i Isomer emission
+    # GAMMA = "Gamma" # g Gamma emission
+    # ISOMER = "Isomer" # i Isomer emission
     PROTON = "Proton" # p Proton emission
     NEUTRON = "Neutron" # n Neutron emission
     SF = "SF" # sf Spontaenous fission
