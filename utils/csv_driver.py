@@ -1,7 +1,8 @@
 import csv
 import re
-from ..nucleidchartlib.element.element import Element, Nucleide
-from ..nucleidchartlib.enums import DecayMode
+from nucleidechartlib.element.element import Element
+from nucleidechartlib.element.nucleide import Nucleide
+from nucleidechartlib.enums import DecayMode
 
 def read_elements(file_name):
     with open(file_name, newline='') as csvfile:

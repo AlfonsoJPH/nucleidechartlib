@@ -1,3 +1,4 @@
+import json
 unit = 40;
 a_base = (2.97, 2.1)
 example_config = {
@@ -98,17 +99,9 @@ example_config = {
                 "fill": "#548088",
                 "text": "black"
             },
-            "ELECTRON_CAPTURE": {
-                "fill": "#76C848",
-                "text": "black"
-            },
             "STABLE": {
                 "fill": "black",
                 "text": "white"
-            },
-            "PROTON": {
-                "fill": "#AD8516",
-                "text": "black"
             },
             "NEUTRON": {
                 "fill": "#DC5FCD",
@@ -238,20 +231,12 @@ A_regular_detail_nodiv_config = {
                 "fill": "#548088",
                 "text": "black"
             },
-            "ELECTRON_CAPTURE": {
-                "fill": "#76C848",
-                "text": "black"
-            },
             "STABLE": {
                 "fill": "black",
                 "text": "white"
             },
             "PROTON": {
                 "fill": "#AD8516",
-                "text": "black"
-            },
-            "NEUTRON": {
-                "fill": "#DC5FCD",
                 "text": "black"
             },
             "SF": {
@@ -377,20 +362,12 @@ A_min_detail_nodiv_config = {
                 "fill": "#548088",
                 "text": "black"
             },
-            "ELECTRON_CAPTURE": {
-                "fill": "#76C848",
-                "text": "black"
-            },
             "STABLE": {
                 "fill": "black",
                 "text": "white"
             },
             "PROTON": {
                 "fill": "#AD8516",
-                "text": "black"
-            },
-            "NEUTRON": {
-                "fill": "#DC5FCD",
                 "text": "black"
             },
             "SF": {
@@ -514,20 +491,12 @@ A_regular_detail_2div_config = {
                 "fill": "#548088",
                 "text": "black"
             },
-            "ELECTRON_CAPTURE": {
-                "fill": "#76C848",
-                "text": "black"
-            },
             "STABLE": {
                 "fill": "black",
                 "text": "white"
             },
             "PROTON": {
                 "fill": "#AD8516",
-                "text": "black"
-            },
-            "NEUTRON": {
-                "fill": "#DC5FCD",
                 "text": "black"
             },
             "SF": {
@@ -653,20 +622,12 @@ A_min_detail_2div_config = {
                 "fill": "#548088",
                 "text": "black"
             },
-            "ELECTRON_CAPTURE": {
-                "fill": "#76C848",
-                "text": "black"
-            },
             "STABLE": {
                 "fill": "black",
                 "text": "white"
             },
             "PROTON": {
                 "fill": "#AD8516",
-                "text": "black"
-            },
-            "NEUTRON": {
-                "fill": "#DC5FCD",
                 "text": "black"
             },
             "SF": {
@@ -793,20 +754,12 @@ A_regular_detail_3div_config = {
                 "fill": "#548088",
                 "text": "black"
             },
-            "ELECTRON_CAPTURE": {
-                "fill": "#76C848",
-                "text": "black"
-            },
             "STABLE": {
                 "fill": "black",
                 "text": "white"
             },
             "PROTON": {
                 "fill": "#AD8516",
-                "text": "black"
-            },
-            "NEUTRON": {
-                "fill": "#DC5FCD",
                 "text": "black"
             },
             "SF": {
@@ -932,20 +885,12 @@ A_min_detail_3div_config = {
                 "fill": "#548088",
                 "text": "black"
             },
-            "ELECTRON_CAPTURE": {
-                "fill": "#76C848",
-                "text": "black"
-            },
             "STABLE": {
                 "fill": "black",
                 "text": "white"
             },
             "PROTON": {
                 "fill": "#AD8516",
-                "text": "black"
-            },
-            "NEUTRON": {
-                "fill": "#DC5FCD",
                 "text": "black"
             },
             "SF": {
@@ -971,5 +916,8 @@ A_min_detail_3div_config = {
         }
     },
 }
+# json_config = {}
+# with open('/home/alfonso/Documents/TFG/testing/testing/data/3div_regular.json') as json_file:
+#     json_config = json.load(json_file)
 
-default_config = A_regular_detail_3div_config
+default_config = A_regular_detail_nodiv_config

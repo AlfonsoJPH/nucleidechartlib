@@ -2,10 +2,10 @@ import svgwrite
 from dataclasses import dataclass
 from typing import Dict
 
-from .element_box import Element_Box
-from .nucleide_sect import Nucleide_Sect
-from ..enums import DecayMode
-from .config import default_config
+from nucleidechartlib.graphics.element_box import Element_Box
+from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
+from nucleidechartlib.enums import DecayMode
+from nucleidechartlib.graphics.config import default_config
 
 @dataclass
 class Nucleide_Table:

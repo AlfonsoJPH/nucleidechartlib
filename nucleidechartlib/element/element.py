@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from typing import Dict
-from .nucleide import Nucleide
+from nucleidechartlib.element.nucleide import Nucleide
 
 # Definición de la clase Nucleide
 @dataclass

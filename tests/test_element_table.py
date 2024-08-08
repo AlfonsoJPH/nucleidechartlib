@@ -4,8 +4,6 @@ from ..nucleidchartlib.graphics.element_box import Element_Box
 from ..utils import csv_driver
 import unittest
 import os
-from dataclasses import dataclass
-from typing import Dict
 
 class TestElementTable(unittest.TestCase):
     def test_table(self):
@@ -22,7 +20,8 @@ class TestElementTable(unittest.TestCase):
                 nucleide_boxes[n] = Nucleide_Sect(id=n,
                                                   name=element.symbol+str(element.mass_number)+"-"+str(n),
                                                   half_life=nucleide.half_life,
-                                                  decay_modes_intensities=nucleide.decay_modes_intensities)
+                                                  decay_modes_intensities=nucleide.decay_modes_intensities,
+                                                  extra={})
                 n+=1
 
             element_boxes[id] = Element_Box(id=id,
@@ -37,7 +36,7 @@ class TestElementTable(unittest.TestCase):
 
 
 
-        table.draw('test_table.svg')#, style='../styles/default_style.css')
+        table.draw('table_A_landscape_3div_regular.svg')#, style='../styles/default_style.css')
 
         print("last id:" + str(id))
 

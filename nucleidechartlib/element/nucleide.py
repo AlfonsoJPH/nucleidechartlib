@@ -1,4 +1,4 @@
-from ..enums import DecayMode
+from nucleidechartlib.enums import DecayMode
 from dataclasses import dataclass
 from typing import Dict, Optional
 

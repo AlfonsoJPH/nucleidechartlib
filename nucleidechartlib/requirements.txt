@@ -1,0 +1,6 @@
+setuptools==69.0.3
+svgwrite==1.4.3
+enum
+json
+dataclasses
+typing
