@@ -1,6 +1,9 @@
 # Byte-compiled / optimized Python files
 __pycache__/
 *.py[cod]
+nucleidechartlib.egg-info
+
+*.backup
 
 # Enviroment folders
 venv/

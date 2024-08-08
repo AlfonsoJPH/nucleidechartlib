@@ -1,0 +1,36 @@
+ /* The animation code */
+@keyframes example {
+  0%   {background-color: red;}
+  25%  {background-color: yellow;}
+  50%  {background-color: blue;}
+  100% {background-color: green;}
+}
+
+.Symbol {
+  display: flex;
+  align-items:  end;
+}
+.Z{
+  display: none;
+}
+.element_box:hover>.Z {
+  display:  block;
+  margin-left: 20px;
+  transform: translateY(50px);
+  font-size: 20px;
+  padding: 20px;
+}
+
+.elelement_box {
+  z-index: 1;
+}
+.element_box:hover>rect{
+
+  transition:   revert;
+  width: 100px;
+  height: 100px;
+  z-index: 100;
+  transform: translateZ(50px);
+
+
+}
