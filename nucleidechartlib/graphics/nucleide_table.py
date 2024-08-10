@@ -59,10 +59,8 @@ class Nucleide_Table:
         box_height = config.get("Element_Box", {}).get("sizes", {}).get("height", 40)
 
 
-        view_box = (0, 0, size[0], size[1])
+        view_box = "0 0 " + str(size[0]) + " " + str(size[1])
         dwg = svgwrite.Drawing(filename, profile='tiny', size=size, viewBox=view_box)
-        # dwg.add(self.draw_border(dwg))
-        # dwg.add(self.draw_legend(dwg))
 
         columns = {}
         rows = {}
@@ -79,16 +77,10 @@ class Nucleide_Table:
 
             section[i] = dwg.g(id="section_"+str(i), transform="translate("+str(h_offset - actual_range[0]*box_width)+", "+str(size[1]-(v_offset - actual_range[0]*box_height))+")")
             boxes.add(section[i])
-            print("Creating section " + str(i))
             i = i + 1
 
 
-        print ("Creating element boxes")
-        # i=0
         for box in self.element_boxes.values():
-            #save on log file the number of box created
-            # i = i + 1
-            # print (f"Creating box {i}")
             protons = box.atomic_number
             neutrons = box.mass_number - protons
 
@@ -101,7 +93,6 @@ class Nucleide_Table:
             for ranges in ranges_divisions:
                 if ranges[0] <= protons <= ranges[1]:
                     section[section_number].add(box.draw(dwg))
-                print("Adding box to section " + str(section_number))
                 section_number = section_number + 1
 
 
@@ -150,7 +141,10 @@ class Nucleide_Table:
         dwg.add(self.draw_legend(dwg, config))
 
         dwg.save()
-
+        with open(filename, 'r') as fin:
+            data = fin.read().splitlines(True)
+        with open(filename, 'w') as fout:
+            fout.writelines(data[1:])
         if style != 'None':
             self.set_style(filename, style)
 
@@ -168,25 +162,6 @@ class Nucleide_Table:
         rect = dwg.rect(id="border", insert=(offset[0], offset[1]), size=(size["width"]-offset[0]*2, size["height"]-offset[1]*2), fill="none", stroke=border_color, stroke_width=border_width)
         return rect
 
-    # "Legend": {
-    #     "sizes": {
-    #         "width": 8*unit,
-    #         "height": 12*unit
-    #     },
-    #     "stroke_width": 0,
-    #     "border_width": 1,
-    #     "show_title": True,
-    #     "title_font": 7,
-    #     "title_offset": (8*unit/2, unit),
-    #     "show_decays_examples": True,
-    #     "show_decays_examples_text": True,
-    #     "decays_examples_font": 4,
-    #     "decays_examples_offset": (unit/2, unit+unit/2),
-    #     "show_nucleides_examples": True,
-    #     "show_nucleides_examples_text": True,
-    #     "nucleides_examples_font": 4,
-    #     "nucleides_examples_offset": (unit/2, unit+10*unit+unit/2),
-    # },
     def draw_legend(self, dwg, config):
         element_box_size = default_config.get("Element_Box", {}).get("sizes", {"width": 40, "height": 40})
         colors = default_config.get("colors")
