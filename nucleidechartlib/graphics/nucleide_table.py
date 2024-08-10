@@ -60,7 +60,7 @@ class Nucleide_Table:
 
 
         view_box = (0, 0, size[0], size[1])
-        dwg = svgwrite.Drawing(filename, profile='tiny', size=size, viewBox=view_box)
+        dwg = svgwrite.Drawing(filename, size=size, viewBox=view_box)
         # dwg.add(self.draw_border(dwg))
         # dwg.add(self.draw_legend(dwg))
 
@@ -79,16 +79,13 @@ class Nucleide_Table:
 
             section[i] = dwg.g(id="section_"+str(i), transform="translate("+str(h_offset - actual_range[0]*box_width)+", "+str(size[1]-(v_offset - actual_range[0]*box_height))+")")
             boxes.add(section[i])
-            print("Creating section " + str(i))
             i = i + 1
 
 
-        print ("Creating element boxes")
         # i=0
         for box in self.element_boxes.values():
             #save on log file the number of box created
             # i = i + 1
-            # print (f"Creating box {i}")
             protons = box.atomic_number
             neutrons = box.mass_number - protons
 
@@ -101,7 +98,6 @@ class Nucleide_Table:
             for ranges in ranges_divisions:
                 if ranges[0] <= protons <= ranges[1]:
                     section[section_number].add(box.draw(dwg))
-                print("Adding box to section " + str(section_number))
                 section_number = section_number + 1
 
 
