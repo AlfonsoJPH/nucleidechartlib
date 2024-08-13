@@ -1,12 +1,8 @@
 {
     "Table": {
         "color": "#FFFFFF",
-        "Text": "black",
         "Z color": "darkgrey",
         "N color": "darkgrey",
-        "font1": 30,
-        "font2": 20,
-        "font3": 10,
         "Z font size": 20,
         "N font size": 20,
         "sizes": { "width": 4989.6 , "height": 3528 },

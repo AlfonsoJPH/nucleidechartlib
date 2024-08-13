@@ -60,6 +60,58 @@ def read_elements(file_name):
     elements[id_elem]=temp_Elem
     return elements
 
+def read_element(file_name, n):
+    with open(file_name, newline='') as csvfile:
+        reader = csv.DictReader(csvfile)
+
+        temp_Elem = Element(id=-1, symbol="dummy", atomic_number=-1, mass_number=-1, nucleides={})
+        id_elem = 0
+        id_nucleide = 0
+
+        # get row n of reader
+        for row in reader:
+            if int(row['A Element']) == n or row['Decay Modes and their Intensities'] == '':
+                continue
+            symbol = row['A Element']
+            temp_Elem = Element(id=id_elem, symbol=remove_numbers(symbol),
+                                atomic_number=int(int(row['Atomic Number']) / 10),
+                                mass_number=int(row['Mass Number']),
+                                nucleides={})
+
+            half_life = row['Half-life']
+            if row['Half-life unit'] != '':
+                half_life += " " + row['Half-life unit']
+            year_of_discovery = row['Year of Discovery']
+
+            if year_of_discovery is not int():
+                year_of_discovery = 0
+
+            mass_excess = row['Mass Excess']
+            if mass_excess is not float():
+                mass_excess = 0.0
+
+            nucleide = Nucleide(id=id_nucleide,
+                                mass_excess=float(mass_excess),
+                                half_life=half_life,
+                                decay_modes_intensities={},
+                                energy_levels={},
+                                spin_and_parity=row['Spin and Parity'],
+                                year_of_discovery=int(year_of_discovery))
+            id_nucleide += 1
+
+
+            set_decay_modes(row['Decay Modes and their Intensities'], nucleide)
+            stable = nucleide.decay_modes_intensities.get(DecayMode.STABLE)
+            if stable != None:
+                nucleide.half_life = str(stable)
+            temp_Elem.nucleides[nucleide.id] = nucleide
+
+            return temp_Elem
+
+        return None
+
+
+
 def set_decay_modes(modes, nucleide):
     data = transform_data(modes)
     for mode in data.split(' '):

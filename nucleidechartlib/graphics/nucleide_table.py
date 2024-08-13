@@ -18,13 +18,8 @@ class Nucleide_Table:
 
 
     def draw(self, filename, config={}, style="None"):
-        color = default_config.get("Table", {}).get("color", "#FFFFFF")
-        text_color = default_config.get("Table", {}).get("Text", "black")
         z_text_color = default_config.get("Table", {}).get("Z color", "darkgrey")
         n_text_color = default_config.get("Table", {}).get("N color", "darkgrey")
-        font_size_1 = default_config.get("Table", {}).get("font1", 30)
-        font_size_2 = default_config.get("Table", {}).get("font2", 12)
-        font_size_3 = default_config.get("Table", {}).get("font3", 10)
         z_font_size = default_config.get("Table", {}).get("Z font size", 30)
         n_font_size = default_config.get("Table", {}).get("N font size", 30)
         size = default_config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
@@ -35,13 +30,8 @@ class Nucleide_Table:
         h_offsets = default_config.get("Table", {}).get("div_h_offsets", {40,})
         ranges_divisions = default_config.get("Table", {}).get("div_ranges", ((0, 118),))
         if config != {}:
-            color = config.get("Table", {}).get("color", color)
-            text_color = config.get("Table", {}).get("Text", text_color)
             z_text_color = config.get("Table", {}).get("Z color", z_text_color)
             n_text_color = config.get("Table", {}).get("N color", n_text_color)
-            font_size_1 = config.get("Table", {}).get("font1", font_size_1)
-            font_size_2 = config.get("Table", {}).get("font2", font_size_2)
-            font_size_3 = config.get("Table", {}).get("font3", font_size_3)
             z_font_size = config.get("Table", {}).get("Z font size", z_font_size)
             n_font_size = config.get("Table", {}).get("N font size", n_font_size)
             size = config.get("Table", {}).get("sizes", size)
@@ -117,7 +107,7 @@ class Nucleide_Table:
             y =  columns[col]*box_width - z_font_size/4 - box_width/2
             y = -y
             section_numbers_n = 0
-            n = dwg.add(dwg.text(str(col), insert=(x,y), fill=z_text_color, font_size=z_font_size, text_anchor="middle", font_weight="bold"))
+            n = dwg.add(dwg.text(str(col), insert=(x,y), class_="z_index", fill=z_text_color, font_size=z_font_size, text_anchor="middle", font_weight="bold"))
             for ranges in ranges_divisions:
                 if ranges[0] <= columns[col] <= ranges[1]:
                     section_numbers[section_numbers_n].add(n)
@@ -127,7 +117,7 @@ class Nucleide_Table:
             y = row*box_height + box_width/2 - n_font_size/4
             y = -y
             section_numbers_n = 0
-            n = dwg.add(dwg.text(str(row), insert=(x, y), fill=n_text_color, font_size=n_font_size, text_anchor="middle", font_weight="bold"))
+            n = dwg.add(dwg.text(str(row), insert=(x, y), class_="n_index", fill=n_text_color, font_size=n_font_size, text_anchor="middle", font_weight="bold"))
             for ranges in ranges_divisions:
                 if ranges[0] <= row <= ranges[1]:
                     section_numbers[section_numbers_n].add(n)
@@ -156,33 +146,16 @@ class Nucleide_Table:
         size = default_config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
         border_width = default_config.get("Table", {}).get("border_width", 1)
         border_color = default_config.get("Table", {}).get("border_color", "black")
+        border_background = default_config.get("Table", {}).get("color", "none")
         if config != {}:
             offset = config.get("Table", {}).get("border_offset", offset)
             size = config.get("Table", {}).get("sizes", size)
             border_width = config.get("Table", {}).get("border_width", border_width)
             border_color = config.get("Table", {}).get("border_color", border_color)
-        rect = dwg.rect(id="border", insert=(offset[0], offset[1]), size=(size["width"]-offset[0]*2, size["height"]-offset[1]*2), fill="none", stroke=border_color, stroke_width=border_width)
+            border_background = config.get("Table", {}).get("color", border_background)
+        rect = dwg.rect(id="border", insert=(offset[0], offset[1]), size=(size["width"]-offset[0]*2, size["height"]-offset[1]*2), fill=border_background, stroke=border_color, stroke_width=border_width)
         return rect
 
-    # "Legend": {
-    #     "sizes": {
-    #         "width": 8*unit,
-    #         "height": 12*unit
-    #     },
-    #     "stroke_width": 0,
-    #     "border_width": 1,
-    #     "show_title": True,
-    #     "title_font": 7,
-    #     "title_offset": (8*unit/2, unit),
-    #     "show_decays_examples": True,
-    #     "show_decays_examples_text": True,
-    #     "decays_examples_font": 4,
-    #     "decays_examples_offset": (unit/2, unit+unit/2),
-    #     "show_nucleides_examples": True,
-    #     "show_nucleides_examples_text": True,
-    #     "nucleides_examples_font": 4,
-    #     "nucleides_examples_offset": (unit/2, unit+10*unit+unit/2),
-    # },
     def draw_legend(self, dwg, config):
         element_box_size = default_config.get("Element_Box", {}).get("sizes", {"width": 40, "height": 40})
         colors = default_config.get("colors")
