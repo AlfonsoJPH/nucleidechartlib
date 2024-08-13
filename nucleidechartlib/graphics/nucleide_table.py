@@ -60,7 +60,7 @@ class Nucleide_Table:
 
 
         view_box = "0 0 " + str(size[0]) + " " + str(size[1])
-        dwg = svgwrite.Drawing(filename, profile='tiny', size=size, viewBox=view_box)
+        dwg = svgwrite.Drawing(filename, profile='tiny', viewBox=view_box)
 
         columns = {}
         rows = {}
@@ -112,7 +112,7 @@ class Nucleide_Table:
             y =  columns[col]*box_width - z_font_size/4 - box_width/2
             y = -y
             section_numbers_n = 0
-            n = dwg.add(dwg.text(str(col), insert=(x,y), fill=z_text_color, font_size=z_font_size, text_anchor="middle", font_weight="bold"))
+            n = dwg.text(str(col), insert=(x,y), fill=z_text_color, font_size=z_font_size, text_anchor="middle", font_weight="bold")
             for ranges in ranges_divisions:
                 if ranges[0] <= columns[col] <= ranges[1]:
                     section_numbers[section_numbers_n].add(n)
@@ -122,7 +122,7 @@ class Nucleide_Table:
             y = row*box_height + box_width/2 - n_font_size/4
             y = -y
             section_numbers_n = 0
-            n = dwg.add(dwg.text(str(row), insert=(x, y), fill=n_text_color, font_size=n_font_size, text_anchor="middle", font_weight="bold"))
+            n = dwg.text(str(row), insert=(x, y), fill=n_text_color, font_size=n_font_size, text_anchor="middle", font_weight="bold")
             for ranges in ranges_divisions:
                 if ranges[0] <= row <= ranges[1]:
                     section_numbers[section_numbers_n].add(n)

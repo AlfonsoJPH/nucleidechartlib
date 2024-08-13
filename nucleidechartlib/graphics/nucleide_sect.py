@@ -151,7 +151,7 @@ class Nucleide_Sect:
 
 
 
-        border = dwg.rect(size=(x_size, y_size), fill="none", stroke=stroke_color, stroke_width=border_width)
+        border = dwg.rect(size=(x_size, y_size), fill="none", stroke=stroke_color, stroke_width=border_width, class_="border")
         nucleide_group.add(border)
 
         return nucleide_group
