@@ -68,15 +68,24 @@ def read_element(file_name, n):
         id_elem = 0
         id_nucleide = 0
 
+        found=False
+        temp_Elem = Element(id=-1, symbol="",
+                                atomic_number=-1,
+                                mass_number=-1,
+                                nucleides={})
         # get row n of reader
         for row in reader:
-            if int(row['A Element']) == n or row['Decay Modes and their Intensities'] == '':
+            if(found and row['A Element'] != n):
+                return temp_Elem
+
+            if row['A Element'] != n  or row['Decay Modes and their Intensities'] == '':
                 continue
             symbol = row['A Element']
-            temp_Elem = Element(id=id_elem, symbol=remove_numbers(symbol),
-                                atomic_number=int(int(row['Atomic Number']) / 10),
-                                mass_number=int(row['Mass Number']),
-                                nucleides={})
+            if(not found):
+                temp_Elem = Element(id=id_elem, symbol=remove_numbers(symbol),
+                                    atomic_number=int(int(row['Atomic Number']) / 10),
+                                    mass_number=int(row['Mass Number']),
+                                    nucleides={})
 
             half_life = row['Half-life']
             if row['Half-life unit'] != '':
@@ -106,9 +115,8 @@ def read_element(file_name, n):
                 nucleide.half_life = str(stable)
             temp_Elem.nucleides[nucleide.id] = nucleide
 
-            return temp_Elem
 
-        return None
+        return temp_Elem
 
 
 

@@ -49,7 +49,7 @@ class Nucleide_Table:
         box_height = config.get("Element_Box", {}).get("sizes", {}).get("height", 40)
 
 
-        view_box = (0, 0, size[0], size[1])
+        view_box = "0 0 " +  str(size[0]) + " " + str(size[1])
         dwg = svgwrite.Drawing(filename, size=size, viewBox=view_box)
         # dwg.add(self.draw_border(dwg))
         # dwg.add(self.draw_legend(dwg))
@@ -84,7 +84,7 @@ class Nucleide_Table:
             section_number = 0
             for ranges in ranges_divisions:
                 if ranges[0] <= protons <= ranges[1]:
-                    section[section_number].add(box.draw(dwg))
+                    section[section_number].add(box.draw(dwg, config))
                 section_number = section_number + 1
 
 
