@@ -6,7 +6,7 @@ setup(
     description='Una librería para generar tablas de nucleidos.',
     author='Alfonso Jesús Piñera Herrera',
     author_email='alfonsojph@correo.ugr.es',
-    packages=['nucleidechartlib', 'utils'],  # Incluye explícitamente los paquetes
+    packages=find_packages(),  # Usa find_packages() para detectar automáticamente todos los paquetes
     install_requires=[
         'setuptools==69.0.3',
         'svgwrite==1.4.3',
