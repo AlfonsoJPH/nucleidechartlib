@@ -5,7 +5,6 @@ from typing import Dict
 from nucleidechartlib.graphics.element_box import Element_Box
 from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
 from nucleidechartlib.enums import DecayMode
-from nucleidechartlib.graphics.config import default_config
 
 @dataclass
 class Nucleide_Table:
@@ -18,29 +17,17 @@ class Nucleide_Table:
 
 
     def draw(self, filename, config={}, style="None"):
-        z_text_color = default_config.get("Table", {}).get("Z color", "darkgrey")
-        n_text_color = default_config.get("Table", {}).get("N color", "darkgrey")
-        z_font_size = default_config.get("Table", {}).get("Z font size", 30)
-        n_font_size = default_config.get("Table", {}).get("N font size", 30)
-        size = default_config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
-        number_of_divisions = default_config.get("Table", {}).get("number_of_divisions", 1)
-        h_offset = default_config.get("Table", {}).get("base_h_offset", 0)
-        v_offset = default_config.get("Table", {}).get("base_v_offset", 0)
-        v_offsets = default_config.get("Table", {}).get("div_v_offsets", {40,})
-        h_offsets = default_config.get("Table", {}).get("div_h_offsets", {40,})
-        ranges_divisions = default_config.get("Table", {}).get("div_ranges", ((0, 118),))
-        if config != {}:
-            z_text_color = config.get("Table", {}).get("Z color", z_text_color)
-            n_text_color = config.get("Table", {}).get("N color", n_text_color)
-            z_font_size = config.get("Table", {}).get("Z font size", z_font_size)
-            n_font_size = config.get("Table", {}).get("N font size", n_font_size)
-            size = config.get("Table", {}).get("sizes", size)
-            number_of_divisions = config.get("Table", {}).get("number_of_divisions", number_of_divisions)
-            h_offset = config.get("Table", {}).get("base_h_offset", h_offset)
-            v_offset = config.get("Table", {}).get("base_v_offset", v_offset)
-            v_offsets = config.get("Table", {}).get("div_v_offsets", v_offsets)
-            h_offsets = config.get("Table", {}).get("div_h_offsets", h_offsets)
-            ranges_divisions = config.get("Table", {}).get("div_ranges", ranges_divisions)
+        z_text_color = config.get("Table", {}).get("Z color", "darkgrey")
+        n_text_color = config.get("Table", {}).get("N color", "darkgrey")
+        z_font_size = config.get("Table", {}).get("Z font size", 30)
+        n_font_size = config.get("Table", {}).get("N font size", 30)
+        size = config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
+        number_of_divisions = config.get("Table", {}).get("number_of_divisions", 1)
+        h_offset = config.get("Table", {}).get("base_h_offset", 0)
+        v_offset = config.get("Table", {}).get("base_v_offset", 0)
+        v_offsets = config.get("Table", {}).get("div_v_offsets", {40,})
+        h_offsets = config.get("Table", {}).get("div_h_offsets", {40,})
+        ranges_divisions = config.get("Table", {}).get("div_ranges", ((0, 118),))
 
 
         size = (size["width"], size["height"])
@@ -142,24 +129,18 @@ class Nucleide_Table:
 
 
     def draw_border(self, dwg, config={}):
-        offset = default_config.get("Table", {}).get("border_offset", (80, 80))
-        size = default_config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
-        border_width = default_config.get("Table", {}).get("border_width", 1)
-        border_color = default_config.get("Table", {}).get("border_color", "black")
-        border_background = default_config.get("Table", {}).get("color", "none")
-        if config != {}:
-            offset = config.get("Table", {}).get("border_offset", offset)
-            size = config.get("Table", {}).get("sizes", size)
-            border_width = config.get("Table", {}).get("border_width", border_width)
-            border_color = config.get("Table", {}).get("border_color", border_color)
-            border_background = config.get("Table", {}).get("color", border_background)
+        offset = config.get("Table", {}).get("border_offset", (80, 80))
+        size = config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
+        border_width = config.get("Table", {}).get("border_width", 1)
+        border_color = config.get("Table", {}).get("border_color", "black")
+        border_background = config.get("Table", {}).get("color", "none")
         rect = dwg.rect(id="border", insert=(offset[0], offset[1]), size=(size["width"]-offset[0]*2, size["height"]-offset[1]*2), fill=border_background, stroke=border_color, stroke_width=border_width)
         return rect
 
     def draw_legend(self, dwg, config):
-        element_box_size = default_config.get("Element_Box", {}).get("sizes", {"width": 40, "height": 40})
-        colors = default_config.get("colors")
-        legend_config = default_config.get("Legend", {})
+        element_box_size = config.get("Element_Box", {}).get("sizes", {"width": 40, "height": 40})
+        colors = config.get("colors")
+        legend_config = config.get("Legend", {})
         sizes = legend_config.get("sizes", {})
         offset = legend_config.get("offset", (40, 40))
         border_width = legend_config.get("border_width", 1)
@@ -182,30 +163,6 @@ class Nucleide_Table:
         nucleides_examples_offset = legend_config.get("nucleides_examples_offset", (20, 60))
         nucleides_examples_font_offset = legend_config.get("nucleides_examples_font_offset", (20, 60))
         nucleides_examples_font_color = legend_config.get("nucleides_examples_font_color", "black")
-        if config != {}:
-            colors = config.get("colors", colors)
-            element_box_size = config.get("Element_Box", {}).get("sizes", element_box_size)
-            sizes = config.get("Legend", {}).get("sizes", sizes)
-            offset = config.get("Legend", {}).get("offset", offset)
-            border_width = config.get("Legend", {}).get("border_width", border_width)
-            border_color = config.get("Legend", {}).get("border_color", border_color)
-            panel_background = config.get("Legend", {}).get("panel_background", panel_background)
-            show_title = config.get("Legend", {}).get("show_title", show_title)
-            title_font = config.get("Legend", {}).get("title_font", title_font)
-            title_font_color = config.get("Legend", {}).get("title_font_color", title_font_color)
-            title_offset = config.get("Legend", {}).get("title_offset", title_offset)
-            show_decays_examples = config.get("Legend", {}).get("show_decays_examples", show_decays_examples)
-            show_decays_examples_text = config.get("Legend", {}).get("show_decays_examples_text", show_decays_examples_text)
-            decays_examples_font = config.get("Legend", {}).get("decays_examples_font", decays_examples_font)
-            decays_examples_offset = config.get("Legend", {}).get("decays_examples_offset", decays_examples_offset)
-            decays_examples_font_offset = config.get("Legend", {}).get("decays_examples_font_offset", decays_examples_font_offset)
-            decays_examples_font_color = config.get("Legend", {}).get("decays_examples_font_color", decays_examples_font_color)
-            show_nucleides_examples = config.get("Legend", {}).get("show_nucleides_examples", show_nucleides_examples)
-            show_nucleides_examples_text = config.get("Legend", {}).get("show_nucleides_examples_text", show_nucleides_examples_text)
-            nucleides_examples_font = config.get("Legend", {}).get("nucleides_examples_font", nucleides_examples_font)
-            nucleides_examples_offset = config.get("Legend", {}).get("nucleides_examples_offset", nucleides_examples_offset)
-            nucleides_examples_font_offset = config.get("Legend", {}).get("nucleides_examples_font_offset", nucleides_examples_font_offset)
-            nucleides_examples_font_color = config.get("Legend", {}).get("nucleides_examples_font_color", nucleides_examples_font_color)
 
 
         sizes = (sizes["width"], sizes["height"])

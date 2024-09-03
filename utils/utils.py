@@ -55,3 +55,15 @@ def read_config(file_path):
     with open(file_path, 'r') as file:
         config = json.load(file)
     return config
+
+def update_config(default_config, provided_config):
+    config = default_config.copy()
+
+    for key, value in provided_config.items():
+        if key in config:
+            if isinstance(config[key], dict) and isinstance(value, dict):
+                config[key].update(value)
+            else:
+                config[key] = value
+
+    return config

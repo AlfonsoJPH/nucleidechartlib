@@ -1,4 +1,5 @@
 from utils.csv_driver import read_elements, read_element
+from utils.utils import update_config
 from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
 from nucleidechartlib.graphics.nucleide_table import Nucleide_Table
 from nucleidechartlib.graphics.element_box import Element_Box
@@ -15,6 +16,7 @@ def load_element_csv(file_name, n):
 
 
 def gen_chart(elements, output, config, style):
+    active_config = update_config(default_config, config)
     element_boxes = {}
     id = 0
     for element in elements.values():
@@ -40,14 +42,12 @@ def gen_chart(elements, output, config, style):
 
 
 
-    table.draw(filename=output, config=config, style=style)
+    table.draw(filename=output, config=active_config, style=style)
 
 def gen_element(element, output, config):
-    h_offset = default_config.get("Table", {}).get("base_h_offset", 0)
-    v_offset = default_config.get("Table", {}).get("base_v_offset", 0)
-    if config != {}:
-        h_offset = config.get("Table", {}).get("base_h_offset", h_offset)
-        v_offset = config.get("Table", {}).get("base_v_offset", v_offset)
+    active_config = update_config(default_config, config)
+    h_offset = active_config.get("Table", {}).get("base_h_offset", 0)
+    v_offset = active_config.get("Table", {}).get("base_v_offset", 0)
 
     nucleide_boxes = {}
     id = 0
@@ -68,9 +68,9 @@ def gen_element(element, output, config):
 
     dwg = svgwrite.Drawing(output, viewBox = "0 0 100 100")
 
-    position = element_box.get_position(config)
+    position = element_box.get_position(active_config)
     group = dwg.g(transform="translate("+str(-position[0])+", "+str(-position[1])+")")
-    group.add(element_box.draw(dwg, config))
+    group.add(element_box.draw(dwg, active_config))
 
     dwg.add(group)
     dwg.save()

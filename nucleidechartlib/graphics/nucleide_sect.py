@@ -2,7 +2,6 @@ from dataclasses import dataclass
 
 from nucleidechartlib.enums import DecayMode
 from typing import Dict
-from nucleidechartlib.graphics.config import default_config
 
 @dataclass
 class Nucleide_Sect:
@@ -34,30 +33,16 @@ class Nucleide_Sect:
         # Find the key with the maximum value
         main_decay = self.get_max_decay_mode()
 
-        colors = default_config.get("colors")
-        stroke_color = default_config.get("colors").get("Stroke")
-        stroke_width = default_config.get("Nucleide_Sect").get("stroke_width")
-        border_width = default_config.get("Nucleide_Sect").get("border_width")
-        show_half_life = default_config.get("Nucleide_Sect").get("show_half_life")
-        show_energy = default_config.get("Nucleide_Sect").get("show_energy")
-        size = default_config.get("Nucleide_Sect").get("sizes")
-        element_box_size = default_config.get("Element_Box").get("sizes")
-        half_life_font_size = default_config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_font")
-        energy_font_size = default_config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_font")
-        if config != {}:
-            colors = config.get("colors", colors)
-            stroke_color = config.get("colors", {}).get("Stroke", stroke_color)
-            stroke_width = config.get("Nucleide_Sect", {}).get("sizes", {}).get("stroke_width", stroke_width)
-            border_width = config.get("Nucleide_Sect", {}).get("sizes", {}).get("border_width", border_width)
-            show_half_life = config.get("Nucleide_Sect").get("show_half_life")
-            show_energy = config.get("Nucleide_Sect").get("show_energy")
-            size = config.get("Nucleide_Sect", {}).get("sizes", size)
-            element_box_size = config.get("Element_Box", {}).get("sizes", element_box_size)
-            half_life_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_font")
-            energy_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_font")
-
-
-
+        colors = config.get("colors")
+        stroke_color = config.get("colors").get("Stroke")
+        stroke_width = config.get("Nucleide_Sect").get("stroke_width")
+        border_width = config.get("Nucleide_Sect").get("border_width")
+        show_half_life = config.get("Nucleide_Sect").get("show_half_life")
+        show_energy = config.get("Nucleide_Sect").get("show_energy")
+        size = config.get("Nucleide_Sect").get("sizes")
+        element_box_size = config.get("Element_Box").get("sizes")
+        half_life_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_font")
+        energy_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_font")
 
         #posicion relativa y al final tranform a get_position
         text_color = "#000000"
@@ -126,22 +111,16 @@ class Nucleide_Sect:
                 nucleide_group.add(triangle)
 
         if show_half_life:
-            half_life_font_size = default_config.get("Nucleide_Sect").get("half_life_font")
-            half_life_offset = default_config.get("Nucleide_Sect").get("half_life_offset")
+            half_life_font_size = config.get("Nucleide_Sect").get("half_life_font")
+            half_life_offset = config.get("Nucleide_Sect").get("half_life_offset")
             half_life_offset = (x_size*half_life_offset[0], half_life_offset[1])
-            if config != {}:
-                half_life_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_font", half_life_font_size)
-                half_life_offset = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_offset", half_life_offset)
 
             half_life_text = dwg.text(self.half_life, class_="half_life", insert=half_life_offset, font_size=half_life_font_size, fill=text_color, text_anchor="middle")
             nucleide_group.add(half_life_text)
 
         if show_energy:
-            energy_offset = default_config.get("Nucleide_Sect").get("energy_offset")
-            energy_font_size = default_config.get("Nucleide_Sect").get("energy_font")
-            if config != {}:
-                energy_offset = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_offset", energy_offset)
-                energy_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_font", energy_font_size)
+            energy_offset = config.get("Nucleide_Sect").get("energy_offset")
+            energy_font_size = config.get("Nucleide_Sect").get("energy_font")
 
             e = 0
             for key, value in self.extra.items():

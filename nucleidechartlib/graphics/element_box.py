@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from typing import Dict
 
 from .nucleide_sect import Nucleide_Sect
-from .config import default_config
 
 
 @dataclass
@@ -36,23 +35,14 @@ class Element_Box:
 
 
     def draw(self, dwg, config={}):
-        colors = default_config.get("colors")
-        stroke_color = default_config.get("colors").get("Stroke")
-        stroke_width = default_config.get("Element_Box").get("stroke_width")
-        border_width = default_config.get("Element_Box").get("border_width")
-        font_size = default_config.get("Element_Box").get("name_font")
-        size = default_config.get("Element_Box").get("sizes")
-        max_number_of_nucleides = default_config.get("Element_Box").get("max_number_of_nucleides")
-        symbol_and_weight = default_config.get("Element_Box").get("symbol_and_weight")
-        if config != {}:
-            colors = config.get("colors", colors)
-            stroke_color = config.get("colors", {}).get("Stroke", stroke_color)
-            stroke_width = config.get("Element_Box", {}).get("sizes", {}).get("stroke_width", stroke_width)
-            border_width = config.get("Element_Box", {}).get("sizes", {}).get("border_width", border_width)
-            font_size = config.get("Element_Box", {}).get("sizes", {}).get("name", font_size)
-            size = config.get("Element_Box", {}).get("sizes", size)
-            max_number_of_nucleides = config.get("Element_Box", {}).get("max_number_of_nucleides", max_number_of_nucleides)
-            symbol_and_weight = config.get("Element_Box", {}).get("symbol_and_weight", symbol_and_weight)
+        colors = config.get("colors")
+        stroke_color = config.get("colors").get("Stroke")
+        stroke_width = config.get("Element_Box").get("stroke_width")
+        border_width = config.get("Element_Box").get("border_width")
+        font_size = config.get("Element_Box").get("name_font")
+        size = config.get("Element_Box").get("sizes")
+        max_number_of_nucleides = config.get("Element_Box").get("max_number_of_nucleides")
+        symbol_and_weight = config.get("Element_Box").get("symbol_and_weight")
 
 
 
@@ -89,36 +79,26 @@ class Element_Box:
         if symbol_and_weight:
             name_text = self.symbol + " " + str(self.mass_number)
 
-            name_offset = default_config.get("Element_Box").get("name_offset")
-            name_font = default_config.get("Element_Box").get("name_font")
-            if config != {}:
-                name_offset = config.get("Element_Box").get("name_offset", name_offset)
-                name_font = config.get("Element_Box").get("name_font", name_font)
+            name_offset = config.get("Element_Box").get("name_offset")
+            name_font = config.get("Element_Box").get("name_font")
 
             symbol = dwg.text(name_text, insert=name_offset, font_size=name_font, fill=text_color, text_anchor="middle", class_="name")
             box.add(symbol)
         else:
-            show_symbol = default_config.get("Element_Box").get("show_symbol")
-            if config != {}:
-                show_symbol = config.get("Element_Box").get("show_symbol", show_symbol)
+            show_symbol = config.get("Element_Box").get("show_symbol")
             if show_symbol:
                 symbol_text = self.symbol
 
-                symbol_font = default_config.get("Element_Box").get("symbol_font")
-                symbol_offset = default_config.get("Element_Box").get("symbol_offset")
-                if config != {}:
-                    symbol_font = config.get("Element_Box").get("symbol_font", symbol_font)
-                    symbol_offset = config.get("Element_Box").get("symbol_offset", symbol_offset)
+                symbol_font = config.get("Element_Box").get("symbol_font")
+                symbol_offset = config.get("Element_Box").get("symbol_offset")
                 symbol = dwg.text(symbol_text, insert=symbol_offset, font_size=symbol_font, fill=text_color, text_anchor="middle", class_="symbol")
                 box.add(symbol)
-            show_weight = default_config.get("Element_Box").get("show_weight")
-            if config != {}:
-                show_weight = config.get("Element_Box").get("show_weight", show_weight)
+            show_weight = config.get("Element_Box").get("show_weight")
             if show_weight:
                 weight_text = str(self.mass_number)
 
-                weight_font = default_config.get("Element_Box").get("weight_font")
-                weight_offset = default_config.get("Element_Box").get("weight_offset")
+                weight_font = config.get("Element_Box").get("weight_font")
+                weight_offset = config.get("Element_Box").get("weight_offset")
                 if config != {}:
                     weight_font = config.get("Element_Box").get("weight_font", weight_font)
                     weight_offset = config.get("Element_Box").get("weight_offset", weight_offset)
