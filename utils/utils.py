@@ -1,36 +1,10 @@
 import csv
 import json
 import xml.etree.ElementTree as ET
-from element import Element, DecayMode
+from nucleidechartlib.element.element import Element
+from nucleidechartlib.element.nucleide import Nucleide
+from nucleidechartlib.enums import DecayMode
 
-def load_elements_from_csv(file_path):
-    elements = []
-    with open(file_path, newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            element = Element(
-                symbol=row['Element'],
-                atomic_number=int(row['Atomic Number']),
-                atomic_weight=int(row['Mass Number'])
-            )
-            # Set additional properties
-            element.isomer = bool(row['Isomer'])
-            element.mass_excess = float(row['Mass Excess'])
-            element.mass_excess_uncertainty = float(row['Mass Excess uncertainty'])
-            element.isomer_excitation_energy = float(row['Isomer Excitation Energy'])
-            element.isomer_excitation_energy_uncertainty = float(row['Isomer Excitation Energy uncertainty'])
-            element.ensdf_year = int(row['Ensdf year'])
-            element.year_of_discovery = int(row['Year of Discovery'])
-
-            # Parse decay modes and intensities
-            if 'Decay Modes and their Intensities' in row:
-                decay_modes = row['Decay Modes and their Intensities'].split(';')
-                for decay_mode in decay_modes:
-                    mode, intensity = decay_mode.split(':')
-                    element.add_decay_mode_and_intensity(DecayMode[mode.strip()], float(intensity.strip()))
-
-            elements.append(element)
-    return elements
 
 def load_config_from_json(file_path):
     with open(file_path, 'r') as json_file:

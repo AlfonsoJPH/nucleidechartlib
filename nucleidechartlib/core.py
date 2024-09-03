@@ -4,6 +4,7 @@ from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
 from nucleidechartlib.graphics.nucleide_table import Nucleide_Table
 from nucleidechartlib.graphics.element_box import Element_Box
 from nucleidechartlib.graphics.config import default_config
+import json
 import svgwrite
 
 
@@ -16,6 +17,9 @@ def load_element_csv(file_name, n):
 
 
 def gen_chart(elements, output, config, style):
+    desc = {}
+    with open('/home/alfonso/GIT/nucleidechartlib/data/description.json') as json_file:
+        desc = json.load(json_file)
     active_config = update_config(default_config, config)
     element_boxes = {}
     id = 0
@@ -42,7 +46,7 @@ def gen_chart(elements, output, config, style):
 
 
 
-    table.draw(filename=output, config=active_config, style=style)
+    table.draw(filename=output, config=active_config, style=style, description=desc)
 
 def gen_element(element, output, config):
     active_config = update_config(default_config, config)

@@ -16,7 +16,7 @@ class Nucleide_Table:
 
 
 
-    def draw(self, filename, config={}, style="None"):
+    def draw(self, filename, config={}, style="None", description={}):
         z_text_color = config.get("Table", {}).get("Z color", "darkgrey")
         n_text_color = config.get("Table", {}).get("N color", "darkgrey")
         z_font_size = config.get("Table", {}).get("Z font size", 30)
@@ -118,6 +118,7 @@ class Nucleide_Table:
         dwg.add(nucleides)
 
         dwg.add(self.draw_legend(dwg, config))
+        dwg.add(self.draw_description(dwg=dwg, config=config, description=description))
 
         dwg.save()
         with open(filename, 'r') as fin:
@@ -215,6 +216,18 @@ class Nucleide_Table:
         legend.add(decay_boxes)
 
         return legend
+
+
+    def draw_description(self, dwg, config, description):
+        description_group = dwg.g(id="description")
+        i = 0
+        for key in description:
+            y=1300+180*i
+            text = dwg.text(text=description[key], insert=(80, y), fill="black", font_size=15)
+            description_group.add(text)
+            i+=1
+
+        return description_group
 
     def set_style(self, filename, style):
         style_line = "<?xml-stylesheet type=\"text/css\" href=\"" + style + "\" ?>\n"
