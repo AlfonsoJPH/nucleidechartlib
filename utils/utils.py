@@ -41,3 +41,14 @@ def update_config(default_config, provided_config):
                 config[key] = value
 
     return config
+
+def draw_arrow(dwg, start, end, stroke_width=2, stroke_color="black", arrow_size=10):
+    marker = dwg.marker(insert=(arrow_size / 2, arrow_size / 2),
+                        size=(arrow_size, arrow_size),
+                        orient="auto")
+
+    marker.add(dwg.polygon(points=[(0, 0), (arrow_size, arrow_size / 2), (0, arrow_size)], fill=stroke_color))
+
+    dwg.defs.add(marker)
+
+    return dwg.line(start=start, end=end, stroke=stroke_color, stroke_width=stroke_width, marker_end=marker.get_funciri())

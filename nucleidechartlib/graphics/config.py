@@ -217,6 +217,13 @@ A_regular_detail_nodiv_config = {
         "nucleides_examples_offset": (unit/2, unit+10*unit+unit/2),
         "nucleides_examples_font_offset": (unit/2+unit, 10*unit+unit/2+2.5),
         "nucleides_examples_font_color": "black",
+        "description_offset": ((40, 40), (400, 400)),
+        "description_font_size": 15,
+        "description_width": 80,
+        "description_space_between_jumps": "1em",
+        "description_space_between_lines": "1.5em",
+        "description_font_color": "black",
+        "description_font_family": "Arial",
     },
     "colors": {
         "Stroke": "black",

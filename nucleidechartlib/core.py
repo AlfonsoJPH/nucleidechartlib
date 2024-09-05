@@ -15,12 +15,14 @@ def load_element_csv(file_name, n):
     element = read_element(file_name, n)
     return element
 
+def fix_config(config):
+    return update_config(default_config, config)
 
 def gen_chart(elements, output, config, style):
     desc = {}
     with open('/home/alfonso/GIT/nucleidechartlib/data/description.json') as json_file:
         desc = json.load(json_file)
-    active_config = update_config(default_config, config)
+    active_config = fix_config(config)
     element_boxes = {}
     id = 0
     for element in elements.values():
@@ -49,7 +51,7 @@ def gen_chart(elements, output, config, style):
     table.draw(filename=output, config=active_config, style=style, description=desc)
 
 def gen_element(element, output, config):
-    active_config = update_config(default_config, config)
+    active_config = fix_config(config)
     h_offset = active_config.get("Table", {}).get("base_h_offset", 0)
     v_offset = active_config.get("Table", {}).get("base_v_offset", 0)
 

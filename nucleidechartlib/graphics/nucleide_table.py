@@ -2,9 +2,11 @@ import svgwrite
 from dataclasses import dataclass
 from typing import Dict
 
+from nucleidechartlib.graphics import element_box
 from nucleidechartlib.graphics.element_box import Element_Box
 from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
 from nucleidechartlib.enums import DecayMode
+from utils.utils import draw_arrow
 
 @dataclass
 class Nucleide_Table:
@@ -38,8 +40,6 @@ class Nucleide_Table:
 
         view_box = "0 0 " +  str(size[0]) + " " + str(size[1])
         dwg = svgwrite.Drawing(filename, size=size, viewBox=view_box)
-        # dwg.add(self.draw_border(dwg))
-        # dwg.add(self.draw_legend(dwg))
 
         columns = {}
         rows = {}
@@ -118,8 +118,10 @@ class Nucleide_Table:
         dwg.add(nucleides)
 
         dwg.add(self.draw_legend(dwg, config))
-        dwg.add(self.draw_description(dwg=dwg, config=config, description=description))
+        if description != {}:
+            dwg.add(self.draw_description(dwg=dwg, config=config, description=description))
 
+        dwg.add(self.draw_axis(dwg, config))
         dwg.save()
         with open(filename, 'r') as fin:
             data = fin.read().splitlines(True)
@@ -147,23 +149,14 @@ class Nucleide_Table:
         border_width = legend_config.get("border_width", 1)
         border_color = legend_config.get("border_color", "black")
         panel_background = legend_config.get("panel_background", "none")
-        show_title = legend_config.get("show_title", True)
         title_font = legend_config.get("title_font", 7)
         title_font_color = legend_config.get("title_font_color", "black")
         title_offset = (0,0)
         title_offset = legend_config.get("title_offset")
-        show_decays_examples = legend_config.get("show_decays_examples", True)
-        show_decays_examples_text = legend_config.get("show_decays_examples_text", True)
         decays_examples_font = legend_config.get("decays_examples_font", 4)
         decays_examples_offset = legend_config.get("decays_examples_offset", (20, 60))
         decays_examples_font_offset = legend_config.get("decays_examples_font_offset", (20, 60))
         decays_examples_font_color = legend_config.get("decays_examples_font_color", "black")
-        show_nucleides_examples = legend_config.get("show_nucleides_examples", True)
-        show_nucleides_examples_text = legend_config.get("show_nucleides_examples_text", True)
-        nucleides_examples_font = legend_config.get("nucleides_examples_font", 4)
-        nucleides_examples_offset = legend_config.get("nucleides_examples_offset", (20, 60))
-        nucleides_examples_font_offset = legend_config.get("nucleides_examples_font_offset", (20, 60))
-        nucleides_examples_font_color = legend_config.get("nucleides_examples_font_color", "black")
 
 
         sizes = (sizes["width"], sizes["height"])
@@ -219,15 +212,53 @@ class Nucleide_Table:
 
 
     def draw_description(self, dwg, config, description):
+        offsets = config.get("Legend", {}).get("description_offset", ((40, 40), (400, 400)))
+        font_size = config.get("Legend", {}).get("description_font_size", 15)
+        width = config.get("Legend", {}).get("description_width", 80)
+        space_between_jumps = config.get("Legend", {}).get("description_space_between_jumps", "1em")
+        space_between_lines = config.get("Legend", {}).get("description_space_between_lines", "1.5em")
+        font_color = config.get("Legend", {}).get("description_font_color", "black")
+        font_family = config.get("Legend", {}).get("description_font_family", "Arial")
+
+
         description_group = dwg.g(id="description")
         i = 0
         for key in description:
-            y=1300+180*i
-            text = dwg.text(text=description[key], insert=(80, y), fill="black", font_size=15)
+            offset = offsets[i]
+            text = dwg.text("", id=("description" + str(i)), insert=(offset[0], offset[1]), fill=font_color, font_size=font_size, font_family=font_family)
+            for line in description[key].split("\n"):
+                if len(line)<=width:
+                    text.add(dwg.tspan(line, x=[offset[0]], dy=[space_between_lines]))
+                else:
+                    text.add(dwg.tspan(line[0:width], x=[offset[0]], dy=[space_between_lines]))
+                    for k in range(width, len(line), width):
+                        text.add(dwg.tspan(line[k:k+width], x=[offset[0]], dy=[space_between_jumps]))
             description_group.add(text)
             i+=1
 
+
         return description_group
+
+    def draw_axis(self, dwg, config):
+        element_box_size = config.get("Element_Box", {}).get("sizes", {"width": 40, "height": 40})
+        size = config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
+        print(size)
+        h_offset = config.get("Table", {}).get("base_h_offset", 0) + 50
+        v_offset = size['height'] - config.get("Table", {}).get("base_v_offset", 0) - 340
+
+        group = dwg.g(id="axis_directions", transform="translate("+str(h_offset)+", "+str(v_offset)+")")
+        p_arrow = draw_arrow(dwg, (0, 0), (0, -750), stroke_width=4, stroke_color="black", arrow_size=10)
+        n_arrow = draw_arrow(dwg, (0, 0), (750, 0), stroke_width=4, stroke_color="black", arrow_size=10)
+
+        p_text = dwg.text("P", insert=(-45, -150), fill="black", font_size=90, text_anchor="middle")
+        n_text = dwg.text("N", insert=(150, 90), fill="black", font_size=90, text_anchor="middle")
+
+        group.add(p_arrow)
+        group.add(n_arrow)
+        group.add(p_text)
+        group.add(n_text)
+
+        return group
 
     def set_style(self, filename, style):
         style_line = "<?xml-stylesheet type=\"text/css\" href=\"" + style + "\" ?>\n"
