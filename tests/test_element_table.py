@@ -1,13 +1,12 @@
-from ..nucleidchartlib.graphics.nucleide_sect import Nucleide_Sect
-from ..nucleidchartlib.graphics.nucleide_table import Nucleide_Table
-from ..nucleidchartlib.graphics.element_box import Element_Box
-from ..utils import csv_driver
+from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
+from nucleidechartlib.graphics.nucleide_table import Nucleide_Table
+from nucleidechartlib.graphics.element_box import Element_Box
+from utils import csv_driver
 import unittest
 import os
 
 class TestElementTable(unittest.TestCase):
     def test_table(self):
-        print("Esto es un test")
         elements = csv_driver.read_elements('../data/example.csv')
         self.assertTrue(len(elements) > 0)
 
@@ -38,20 +37,5 @@ class TestElementTable(unittest.TestCase):
 
         table.draw('table_A_landscape_3div_regular.svg')#, style='../styles/default_style.css')
 
-        print("last id:" + str(id))
-
         self.assertTrue(id > 5)
         self.assertTrue(os.path.exists('test_table.svg'))
-        # os.execvp('inkscape', ['inkscape', 'test_table.svg'])
-
-    # def test_table_divided(self):
-    #     elements = csv_driver.read_elements('datos.csv')
-    #     self.assertTrue(len(elements) > 0)
-    #     table = ElementTable(elements, "A4", 2)
-
-
-
-        # table.draw('test_table_divided.svg')
-
-        # self.assertTrue(os.path.exists('test_table_divided.svg'))
-        # os.execvp('firefox', ['firefox', 'test_table_divided.svg'])

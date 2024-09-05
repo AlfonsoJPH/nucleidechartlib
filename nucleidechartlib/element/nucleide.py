@@ -9,7 +9,7 @@ class Nucleide:
     mass_excess: float
     half_life: str
     decay_modes_intensities: Dict[DecayMode, float]
-    energy_levels: Dict[str, float]
+    energy_levels: Dict[str, str]
     spin_and_parity: str
     year_of_discovery: int
 

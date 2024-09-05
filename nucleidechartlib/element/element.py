@@ -16,5 +16,3 @@ class Element:
 
     def __repr__(self):
         return f"{self.symbol}{self.mass_number}"
-
-    # def add

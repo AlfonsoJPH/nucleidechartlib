@@ -9,7 +9,7 @@ class Nucleide_Sect:
     name: str
     half_life: str
     decay_modes_intensities: Dict[DecayMode, float]
-    extra: Dict[str, str]
+    extra: Dict[DecayMode, float]
 
     def get_max_decay_mode(self):
         maximum = DecayMode.STABLE
@@ -30,7 +30,6 @@ class Nucleide_Sect:
         if not all(isinstance(value, (int, float)) for value in self.decay_modes_intensities.values()):
             raise TypeError("All values in self.decay_modes_intensities should be numbers")
 
-        # Find the key with the maximum value
         main_decay = self.get_max_decay_mode()
 
         colors = config.get("colors")
@@ -44,7 +43,6 @@ class Nucleide_Sect:
         half_life_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("half_life_font")
         energy_font_size = config.get("Nucleide_Sect", {}).get("sizes", {}).get("energy_font")
 
-        #posicion relativa y al final tranform a get_position
         text_color = "#000000"
         main_color = "#FFFFFF"
         if main_decay:
@@ -76,9 +74,6 @@ class Nucleide_Sect:
             # remove the main decay mode
             decay_modes.pop(main_decay)
             i = 0
-            # si la intensidad es menor a un 5% se muestra un triangulo con dos lados de tamaño 0.2*max(v_size, h_size) <= min(v_size, h_size)
-            # si la intensidad es mayor a un 5% se muestra un triangulo con ancho y largo igual a h_size y v_size respectivamente
-            # el triangulo se dibuja  cada vez en una esquina diferente, siendo el orden de las esquinas: superior izquierda, inferior derecha, superior derecha, inferior izquierda
             for key, value in decay_modes.items():
                 actual_color = colors.get("DecayModes").get(key.name).get("fill", "#FFFFFF")
                 points = []
@@ -124,7 +119,7 @@ class Nucleide_Sect:
 
             e = 0
             for key, value in self.extra.items():
-                energy_text = dwg.text(key + " " + value, class_="energy", insert=(energy_offset[0],energy_offset[1]-e*energy_font_size), font_size=energy_font_size, fill=text_color, text_anchor="middle")
+                energy_text = dwg.text(key.value + " " + str(value), class_="energy", insert=(energy_offset[0],energy_offset[1]-e*energy_font_size), font_size=energy_font_size, fill=text_color)
                 e += 1
                 nucleide_group.add(energy_text)
 

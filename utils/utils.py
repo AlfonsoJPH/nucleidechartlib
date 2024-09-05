@@ -1,10 +1,5 @@
-import csv
 import json
 import xml.etree.ElementTree as ET
-from nucleidechartlib.element.element import Element
-from nucleidechartlib.element.nucleide import Nucleide
-from nucleidechartlib.enums import DecayMode
-
 
 def load_config_from_json(file_path):
     with open(file_path, 'r') as json_file:
@@ -20,12 +15,6 @@ def load_config_from_xml(file_path):
     return config
 
 def read_config(file_path):
-    """
-    Lee un archivo de configuración en formato JSON y devuelve su contenido como un diccionario.
-
-    :param file_path: Ruta al archivo JSON de configuración
-    :return: Diccionario con la configuración
-    """
     with open(file_path, 'r') as file:
         config = json.load(file)
     return config

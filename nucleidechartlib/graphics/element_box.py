@@ -39,7 +39,6 @@ class Element_Box:
         stroke_color = config.get("colors").get("Stroke")
         stroke_width = config.get("Element_Box").get("stroke_width")
         border_width = config.get("Element_Box").get("border_width")
-        font_size = config.get("Element_Box").get("name_font")
         size = config.get("Element_Box").get("sizes")
         max_number_of_nucleides = config.get("Element_Box").get("max_number_of_nucleides")
         symbol_and_weight = config.get("Element_Box").get("symbol_and_weight")
@@ -47,7 +46,6 @@ class Element_Box:
 
 
 
-        #posicion relativa y al final tranform a get_position
         pos = "translate" + str(self.get_position(size))
         main_nucleide = self.nucleides.get(0)
         text_color = "#000000"
@@ -67,7 +65,6 @@ class Element_Box:
         box.add(rect)
 
         # plot nucleides
-
         i = 0
         max_number_of_nucleides = min(max_number_of_nucleides, self.nucleides.__len__())
         for nucleide in self.nucleides.items():

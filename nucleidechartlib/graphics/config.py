@@ -1,4 +1,3 @@
-import json
 unit = 40;
 a_base = (2.97, 2.1)
 example_config = {
@@ -85,6 +84,7 @@ example_config = {
         "nucleides_examples_offset": (unit/2, unit+10*unit+unit/2),
         "nucleides_examples_font_offset": (unit/2+unit, 10*unit+unit/2+2.5),
         "nucleides_examples_font_color": "black",
+        "decays_examples_width": 45,
     },
     "colors": {
         "Stroke": "black",
@@ -209,6 +209,7 @@ A_regular_detail_nodiv_config = {
         "show_decays_examples_text": True,
         "decays_examples_font": 10,
         "decays_examples_offset": (unit/2, unit+unit/2),
+        "decays_examples_width": 45,
         "decays_examples_font_offset": (unit/2+unit, unit/2+2.5),
         "decays_examples_font_color": "black",
         "show_nucleides_examples": True,
@@ -217,7 +218,7 @@ A_regular_detail_nodiv_config = {
         "nucleides_examples_offset": (unit/2, unit+10*unit+unit/2),
         "nucleides_examples_font_offset": (unit/2+unit, 10*unit+unit/2+2.5),
         "nucleides_examples_font_color": "black",
-        "description_offset": ((40, 40), (400, 400)),
+        "description_offset": ((3400, 2500), (3300, 100)),
         "description_font_size": 15,
         "description_width": 80,
         "description_space_between_jumps": "1em",
@@ -923,8 +924,5 @@ A_min_detail_3div_config = {
         }
     },
 }
-# json_config = {}
-# with open('/home/alfonso/Documents/TFG/testing/testing/data/3div_regular.json') as json_file:
-#     json_config = json.load(json_file)
 
 default_config = A_regular_detail_nodiv_config

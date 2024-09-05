@@ -1,0 +1,11 @@
+{
+  "Stable": "the decay moves the atom to a stable isotope",
+  "Beta-": "the decay moves the atom one site diagonally up and to the left",
+  "Proton": "the decay moves the atom one site down",
+  "Neutron": "the decay moves the atom one site diagonally to the left",
+  "Alpha": "the decay moves the atom two sites diagonally down and to the left",
+  "Spontaneous Fission": "the nucleus splits into smaller nuclei spontaneously",
+  "Beta+": "the decay moves the atom one site diagonally down and to the right",
+  "Electron Capture": "the decay moves the atom one site diagonally down and to the right",
+  "Isomeric Transition": "the decay moves the atom without changing its position in the table"
+}

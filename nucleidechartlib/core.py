@@ -4,6 +4,7 @@ from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
 from nucleidechartlib.graphics.nucleide_table import Nucleide_Table
 from nucleidechartlib.graphics.element_box import Element_Box
 from nucleidechartlib.graphics.config import default_config
+import os
 import json
 import svgwrite
 
@@ -20,8 +21,24 @@ def fix_config(config):
 
 def gen_chart(elements, output, config, style):
     desc = {}
-    with open('/home/alfonso/GIT/nucleidechartlib/data/description.json') as json_file:
-        desc = json.load(json_file)
+    legend = {}
+    relative_path = os.path.join(os.path.dirname(__file__), '../data/description.json')
+
+    try:
+        with open(relative_path, 'r') as json_file:
+            desc = json.load(json_file)
+    except Exception as e:
+        print(f"Exception opening description file: {e}")
+
+
+    relative_path = os.path.join(os.path.dirname(__file__), '../data/legend.json')
+
+    try:
+        with open(relative_path, 'r') as json_file:
+            legend = json.load(json_file)
+    except Exception as e:
+        print(f"Exception opening legend file: {e}")
+
     active_config = fix_config(config)
     element_boxes = {}
     id = 0
@@ -33,7 +50,7 @@ def gen_chart(elements, output, config, style):
                                               name=element.symbol+str(element.mass_number)+"-"+str(n),
                                               half_life=nucleide.half_life,
                                               decay_modes_intensities=nucleide.decay_modes_intensities,
-                                              extra={})
+                                              extra=nucleide.decay_modes_intensities)
             n+=1
 
         element_boxes[id] = Element_Box(id=id,
@@ -48,7 +65,7 @@ def gen_chart(elements, output, config, style):
 
 
 
-    table.draw(filename=output, config=active_config, style=style, description=desc)
+    table.draw(filename=output, config=active_config, style=style, description=desc, legend=legend)
 
 def gen_element(element, output, config):
     active_config = fix_config(config)
@@ -62,7 +79,7 @@ def gen_element(element, output, config):
                                           name=element.symbol+str(element.mass_number)+"-"+str(id),
                                           half_life=nucleide.half_life,
                                           decay_modes_intensities=nucleide.decay_modes_intensities,
-                                          extra={})
+                                          extra=nucleide.decay_modes_intensities)
         id+=1
 
     element_box = Element_Box(id=0,

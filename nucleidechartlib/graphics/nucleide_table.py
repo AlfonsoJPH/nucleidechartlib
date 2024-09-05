@@ -1,8 +1,8 @@
 import svgwrite
+import textwrap
 from dataclasses import dataclass
 from typing import Dict
 
-from nucleidechartlib.graphics import element_box
 from nucleidechartlib.graphics.element_box import Element_Box
 from nucleidechartlib.graphics.nucleide_sect import Nucleide_Sect
 from nucleidechartlib.enums import DecayMode
@@ -18,7 +18,7 @@ class Nucleide_Table:
 
 
 
-    def draw(self, filename, config={}, style="None", description={}):
+    def draw(self, filename, config={}, style="None", description={}, legend={}):
         z_text_color = config.get("Table", {}).get("Z color", "darkgrey")
         n_text_color = config.get("Table", {}).get("N color", "darkgrey")
         z_font_size = config.get("Table", {}).get("Z font size", 30)
@@ -117,10 +117,11 @@ class Nucleide_Table:
 
         dwg.add(nucleides)
 
-        dwg.add(self.draw_legend(dwg, config))
+        dwg.add(self.draw_legend(dwg, config, legend_description=legend))
         if description != {}:
             dwg.add(self.draw_description(dwg=dwg, config=config, description=description))
 
+        self.draw_title(dwg)
         dwg.add(self.draw_axis(dwg, config))
         dwg.save()
         with open(filename, 'r') as fin:
@@ -140,7 +141,7 @@ class Nucleide_Table:
         rect = dwg.rect(id="border", insert=(offset[0], offset[1]), size=(size["width"]-offset[0]*2, size["height"]-offset[1]*2), fill=border_background, stroke=border_color, stroke_width=border_width)
         return rect
 
-    def draw_legend(self, dwg, config):
+    def draw_legend(self, dwg, config={}, legend_description={}):
         element_box_size = config.get("Element_Box", {}).get("sizes", {"width": 40, "height": 40})
         colors = config.get("colors")
         legend_config = config.get("Legend", {})
@@ -157,13 +158,14 @@ class Nucleide_Table:
         decays_examples_offset = legend_config.get("decays_examples_offset", (20, 60))
         decays_examples_font_offset = legend_config.get("decays_examples_font_offset", (20, 60))
         decays_examples_font_color = legend_config.get("decays_examples_font_color", "black")
+        decays_examples_width = legend_config.get("decays_examples_width", 45)
 
 
         sizes = (sizes["width"], sizes["height"])
 
         legend = dwg.g(id="legend", transform="translate(" + str(offset[0]) + ", " + str(offset[1]) + ")")
         panel = dwg.rect(size=sizes, fill=panel_background, stroke=border_color, stroke_width=border_width, class_="panel")
-        title = dwg.text(text="Leyenda", insert=title_offset, fill=title_font_color, font_size=title_font, text_anchor="middle")
+        title = dwg.text(text="Legend", insert=title_offset, fill=title_font_color, font_size=title_font, text_anchor="middle")
 
         decay_boxes = dwg.g(id="DecayModes_Legend", transform="translate(" + str(decays_examples_offset[0]) + ", " + str(decays_examples_offset[1]) + ")")
 
@@ -176,33 +178,28 @@ class Nucleide_Table:
 
             group = dwg.g(id=decay_mode_name, transform="translate(0, "+str(i*element_box_size["height"])+")")
             rect = dwg.rect(size=(element_box_size["width"], element_box_size["height"]), class_=decay_mode_name, fill=decay_mode_color)
+            border = dwg.rect(size=(element_box_size["width"], element_box_size["height"]), fill="none", stroke=border_color, stroke_width=border_width)
             symbol = dwg.text(text=decay_mode_name[0], insert=(element_box_size["width"]/2, element_box_size["height"]/2+decays_examples_font/4), fill=decay_mode_text_color, font_size=decays_examples_font, text_anchor="middle")
-            text = dwg.text(text=decay_mode_value, insert=decays_examples_font_offset, fill=decays_examples_font_color, font_size=decays_examples_font)
+
+            description = decay_mode_value + ": " + legend_description.get(decay_mode_value, "")
+            text = dwg.text(text="", insert=decays_examples_font_offset, fill=decays_examples_font_color, font_size=decays_examples_font)
+            if len(description) > decays_examples_width:
+                text.add(dwg.tspan(description[0:decays_examples_width], x=[decays_examples_font_offset[0]], dy=[0]))
+                for k in range(decays_examples_width, len(description), decays_examples_width):
+                    text.add(dwg.tspan(description[k:k+decays_examples_width], x=[decays_examples_font_offset[0]], dy=["1em"]))
+            else:
+                text.add(dwg.tspan(description, x=[decays_examples_font_offset[0]], dy=[0]))
+
 
             group.add(rect)
             group.add(symbol)
+            group.add(border)
             group.add(text)
+
+
 
             decay_boxes.add(group)
             i = i + 1
-
-        decays_50 = {}
-        decays_50[DecayMode.ALPHA] = 90
-        decays_50[DecayMode.BETA_PLUS] = 50
-        nucleide_50 = Nucleide_Sect(0, "Nucleide_50", "H U", decays_50, {})
-
-        element_50 = Element_Box(0,"Element","E", 0, 0, {0: nucleide_50})
-
-        i = i + 1
-
-        # group_50 = dwg.g(id="Element_50", transform="translate(0, "+str(i*element_box_size["height"])+")")
-        # string_50 = "E es el nombre del elemento que representa, el número que aparece a su derecha es su número atómico y el número que aparece a su izquierda es su número de másico.\nCuando una caja de elemento contiene más de un nucleido, el número de másico y el número atómico se separan por un espacio en blanco.\nEn el caso de que un nucleido tenga más de un modo de desintegración, se muestra el modo de desintegración con mayor intensidad.\nEn el caso de que un nucleido tenga más de un modo de desintegración con la misma intensidad, se muestra el modo de desintegración con menor número atómico.\nEn el caso de que un nucleido tenga más de un modo de desintegración con la misma intensidad y el mismo número atómico, se muestra el modo de desintegración con menor número de másico.\nEn el caso de que un nucleido tenga más de un modo de desintegración, se muestra el modo principal en la zona superior donde aparece el nombre, y dependiendo de la intensidad la caja puede estar dividida a la mitad"
-        # text_50 = dwg.text(text=string_50, insert=(element_box_size["width"]/2, element_box_size["height"]/2+font_size_2/2), fill="black", font_size=font_size_2)
-        # group_50.add(element_50.draw(dwg))
-        # group_50.add(text_50)
-
-
-        # decay_boxes.add(group_50)
 
         legend.add(panel)
         legend.add(title)
@@ -210,6 +207,38 @@ class Nucleide_Table:
 
         return legend
 
+
+    def draw_title(self, dwg):
+        x_offset = 90
+        y_offset = 180
+
+        dwg.add(dwg.text('Nucleide Chart Generator', insert=(x_offset, y_offset), font_size=100, font_family="Arial", font_weight="bold"))
+
+        y_offset += 50
+
+        font_size = 30
+        max_width = 60
+
+        texts = [
+            "Generated by: nucleidechart.vaelico.es",
+            "Version: 1.0",
+            "Author: Alfonso Jesús Piñera Herrera",
+            "Email: alfonsojph786@gmail.com",
+            "Made in collaboration with: GranaSAT",
+            "GranaSAT Location: Av. de Madrid, 28, Beiro, 18012 Granada",
+            "GranaSAT Email: granasat@ugr.es",
+            "Credits: University of Granada (UGR) - Higher Technical School of Computer Science and Telecommunications Engineering (ETSIIT)",
+            "",
+            "License:",
+            "This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license."
+        ]
+
+        for text in texts:
+            # Dividir el texto en varias líneas si excede el ancho máximo
+            wrapped_lines = textwrap.wrap(text, width=max_width)
+            for line in wrapped_lines:
+                dwg.add(dwg.text(line, insert=(x_offset, y_offset), font_size=font_size, font_family="Arial"))
+                y_offset += 50  # Ajustar el espacio entre líneas según se desee
 
     def draw_description(self, dwg, config, description):
         offsets = config.get("Legend", {}).get("description_offset", ((40, 40), (400, 400)))
@@ -219,6 +248,7 @@ class Nucleide_Table:
         space_between_lines = config.get("Legend", {}).get("description_space_between_lines", "1.5em")
         font_color = config.get("Legend", {}).get("description_font_color", "black")
         font_family = config.get("Legend", {}).get("description_font_family", "Arial")
+        font_weight ="normal"
 
 
         description_group = dwg.g(id="description")
@@ -228,7 +258,10 @@ class Nucleide_Table:
             text = dwg.text("", id=("description" + str(i)), insert=(offset[0], offset[1]), fill=font_color, font_size=font_size, font_family=font_family)
             for line in description[key].split("\n"):
                 if len(line)<=width:
-                    text.add(dwg.tspan(line, x=[offset[0]], dy=[space_between_lines]))
+                    if "**" in line:
+                        line = line.replace("**", "")
+                        font_weight = "bold"
+                    text.add(dwg.tspan(line, x=[offset[0]], dy=[space_between_lines], font_weight=font_weight))
                 else:
                     text.add(dwg.tspan(line[0:width], x=[offset[0]], dy=[space_between_lines]))
                     for k in range(width, len(line), width):
@@ -241,17 +274,17 @@ class Nucleide_Table:
 
     def draw_axis(self, dwg, config):
         element_box_size = config.get("Element_Box", {}).get("sizes", {"width": 40, "height": 40})
+        border_offset = config.get("Table", {}).get("border_offset", (80, 80))
         size = config.get("Table", {}).get("sizes", {"width": 21000, "height": 29700})
-        print(size)
-        h_offset = config.get("Table", {}).get("base_h_offset", 0) + 50
-        v_offset = size['height'] - config.get("Table", {}).get("base_v_offset", 0) - 340
+        h_offset = border_offset[0] + element_box_size["width"]
+        v_offset = size['height'] - border_offset[1] - element_box_size["height"]
 
         group = dwg.g(id="axis_directions", transform="translate("+str(h_offset)+", "+str(v_offset)+")")
         p_arrow = draw_arrow(dwg, (0, 0), (0, -750), stroke_width=4, stroke_color="black", arrow_size=10)
         n_arrow = draw_arrow(dwg, (0, 0), (750, 0), stroke_width=4, stroke_color="black", arrow_size=10)
 
-        p_text = dwg.text("P", insert=(-45, -150), fill="black", font_size=90, text_anchor="middle")
-        n_text = dwg.text("N", insert=(150, 90), fill="black", font_size=90, text_anchor="middle")
+        p_text = dwg.text("Z", insert=(45, -100), fill="black", font_size=90, text_anchor="middle")
+        n_text = dwg.text("N", insert=(100, -30), fill="black", font_size=90, text_anchor="middle")
 
         group.add(p_arrow)
         group.add(n_arrow)
@@ -262,18 +295,14 @@ class Nucleide_Table:
 
     def set_style(self, filename, style):
         style_line = "<?xml-stylesheet type=\"text/css\" href=\"" + style + "\" ?>\n"
-        # Leer el contenido del archivo
         with open(filename, 'r') as file:
             lines = file.readlines()
 
-        # Insertar el texto en la segunda línea (índice 1)
         if len(lines) > 1:
             lines.insert(1, style_line + '\n')
         else:
-            # Si el archivo tiene menos de dos líneas, añadir la nueva línea
             lines.append('\n')
             lines.append(style_line + '\n')
 
-        # Escribir el contenido de nuevo en el archivo
         with open(filename, 'w') as file:
             file.writelines(lines)
