@@ -1,4 +1,4 @@
-# TablaNucleidosReescalable
+# nucleidechartlib
 
 Student: Alfonso Jesús Piñera Herrera
 Professor: Andrés Roldán Aranda
